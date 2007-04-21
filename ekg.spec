@@ -1,11 +1,11 @@
-%define	prel 20070305
+%define	prel 20070420
 %define	major 3
 %define	libname	%mklibname gadu %{major}
 
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.7
-Release:	%mkrel 0.%{prel}.2
+Release:	%mkrel 0.%{prel}.1
 License:	GPL
 Group:		Networking/Instant messaging
 Source0:	http://ekg.chmurka.net/ekg-%{prel}.tar.bz2
@@ -136,6 +136,4 @@ perl -pi -e 's/@[^@]*@//' %{buildroot}%{_libdir}/pkgconfig/libgadu.pc
 %attr(755,root,root) %{_bindir}/ioctld
 %{_datadir}/ekg
 %{_mandir}/man1/*
-%lang(pl) %{_mandir}/pl/man1/*
-
-
+%{_mandir}/pl/man1/*
