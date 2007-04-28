@@ -1,4 +1,4 @@
-%define	prel 20070422
+%define	prel 20070427
 %define	major 3
 %define	libname	%mklibname gadu %{major}
 
