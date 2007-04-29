@@ -1,14 +1,14 @@
-%define	prel 20070427
+#%define	prel 20070427
 %define	major 3
 %define	libname	%mklibname gadu %{major}
 
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.7
-Release:	%mkrel 0.%{prel}.1
+Release:	%mkrel 1
 License:	GPL
 Group:		Networking/Instant messaging
-Source0:	http://ekg.chmurka.net/ekg-%{prel}.tar.bz2
+Source0:	http://ekg.chmurka.net/%{name}-%{version}.tar.bz2
 Source1:	%{name}.conf
 URL:		http://ekg.chmurka.net/
 Patch0:		%{name}-makefile-ioctld-makedir.patch
@@ -80,8 +80,10 @@ Libgadu static library.
 %{_libdir}/libgadu.a
 
 %prep
-%setup -qn %{name}-%{prel}
+%setup -q
+
 %patch0 -p1 -b .%{name}-makefile-ioctld-makedir
+
 rm -fr examples/CVS
 ./autogen.sh
 
