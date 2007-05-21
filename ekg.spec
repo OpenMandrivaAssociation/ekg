@@ -1,11 +1,10 @@
-#%define	prel 20070427
 %define	major 3
 %define	libname	%mklibname gadu %{major}
 
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.7
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		Networking/Instant messaging
 Source0:	http://ekg.chmurka.net/%{name}-%{version}.tar.bz2
@@ -90,7 +89,7 @@ rm -fr examples/CVS
 %build
 
 %configure2_5x \
-	--disable-libgadu-openssl \
+	--enable-libgadu-openssl \
 	--enable-dynamic \
 	--enable-static \
 	--enable-aspell \
@@ -98,7 +97,8 @@ rm -fr examples/CVS
 	--enable-ioctld \
 	--with-pthread \
 	--with-python \
-	--with-libgsm
+	--with-libgsm \
+	--disable-debug
 
 %make
 pushd docs/api
