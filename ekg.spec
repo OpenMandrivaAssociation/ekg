@@ -1,16 +1,14 @@
-%define	major 3
-%define	libname	%mklibname gadu %{major}
-
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.7
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		Networking/Instant messaging
 Source0:	http://ekg.chmurka.net/%{name}-%{version}.tar.bz2
 Source1:	%{name}.conf
 URL:		http://ekg.chmurka.net/
 Patch0:		%{name}-makefile-ioctld-makedir.patch
+Patch1:		%{name}-1.7-external-libgadu.patch
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
 BuildRequires:	libgsm-devel		>= 1.0.10
@@ -19,86 +17,44 @@ BuildRequires:	libncurses-devel	>= 5.5
 BuildRequires:	libjpeg-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
+BuildRequires:	libgadu-devel		>= 1.7.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
-A client compatible with Gadu-Gadu.
+EKG ("Eksperymentalny Klient Gadu-Gadu") is an open source gadu-gadu
+client for UNIX systems. Gadu-Gadu is an instant messaging program,
+very popular in Poland.
 
-Build options:
-- Use pthread in resolver
-- Compile shared version of libgadu
-- Compile with aspell
-- Compile with OpenSSL
-- Compile with Python bindings
-- Compile with zlib (compressed logs)
-- Compile with libjpeg (token support)
-- Compile with ioctld (voip)
+EKG features include:
+  - irssi-like ncurses interface
+  - sending and receiving files
+  - voice conversations
+  - launching shell commands on certain events
+  - reading input from pipe
+  - python scripting support
+  - speech synthesis (using an external program)
+  - encryption support
 
-%package -n %{libname}
-Summary:	Libgadu shared library
-Group:		System/Libraries
-
-%description -n %{libname}
-libgadu is intended to make it easy to add Gadu-Gadu
-communication support to your software.
-
-%files -n %{libname}
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libgadu.so.%{major}*
-
-%package -n %{libname}-devel
-Summary:	Libgadu development library
-Group:		Development/C
-Provides:	gadu-devel = %{version}-%{release}
-Provides:	libgadu-devel = %{version}-%{release}
-Requires:	%{libname} = %{version}-%{release}
-
-%description -n %{libname}-devel
-The libgadu-devel package contains the header files and some
-documentation needed to develop application with libgadu.
-
-%files -n %{libname}-devel
-%defattr(644,root,root,755)
-%doc docs/{7thguard,api,ui,devel-hints,przenosny-kod}.txt docs/protocol.html docs/api/{functions,index,types,style}.*
-%doc ChangeLog docs/{README,TODO} examples
-%{_libdir}/libgadu.so
-%{_includedir}/libgadu.h
-%{_includedir}/libgadu-config.h
-%{_libdir}/pkgconfig/*.pc
-
-%package -n %{libname}-static-devel
-Summary:	Libgadu static library
-Group:		Development/C
-Requires:	%{libname}-devel = %{version}-%{release}
-
-%description -n %{libname}-static-devel
-Libgadu static library.
-
-%files -n %{libname}-static-devel
-%defattr(644,root,root,755)
-%{_libdir}/libgadu.a
+Please note that the program is not internationalized and all messages
+are in Polish (although the commands are in English). 
 
 %prep
 %setup -q
-
 %patch0 -p1 -b .%{name}-makefile-ioctld-makedir
+%patch1 -p1
 
 rm -fr examples/CVS
-./autogen.sh
 
 %build
-
+./autogen.sh
 %configure2_5x \
-	--enable-libgadu-openssl \
-	--enable-dynamic \
-	--enable-static \
 	--enable-aspell \
+	--disable-static \
 	--enable-shared \
 	--enable-ioctld \
-	--with-pthread \
 	--with-python \
 	--with-libgsm \
-	--disable-debug
+	--without-libgadu
 
 %make
 pushd docs/api
@@ -123,8 +79,6 @@ perl -pi -e 's/\015$//' %{buildroot}/%{_bindir}/ekl2.pl
 #Remove bad requires from libgadu.pc
 perl -pi -e 's/@[^@]*@//' %{buildroot}%{_libdir}/pkgconfig/libgadu.pc  
 
-%post -n %{libname} -p /sbin/ldconfig
-%postun -n %{libname} -p /sbin/ldconfig
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
