@@ -18,6 +18,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libgadu-devel		>= 1.7.1
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 EKG ("Eksperymentalny Klient Gadu-Gadu") is an open source gadu-gadu
