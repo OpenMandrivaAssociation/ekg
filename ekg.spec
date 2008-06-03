@@ -1,14 +1,15 @@
+%define prel rc1
+
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
-Version:	1.7
-Release:	%mkrel 4
-License:	GPL
+Version:	1.8
+Release:	%mkrel -c rc1 1
+License:	GPLv2+
 Group:		Networking/Instant messaging
-Source0:	http://ekg.chmurka.net/%{name}-%{version}.tar.bz2
+Source0:	http://ekg.chmurka.net/%{name}-%{version}%{prel}.tar.bz2
 Source1:	%{name}.conf
 URL:		http://ekg.chmurka.net/
 Patch0:		%{name}-makefile-ioctld-makedir.patch
-Patch1:		%{name}-1.7-external-libgadu.patch
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
 BuildRequires:	libgsm-devel		>= 1.0.10
@@ -39,11 +40,8 @@ Please note that the program is not internationalized and all messages
 are in Polish (although the commands are in English). 
 
 %prep
-%setup -q
-%patch0 -p1 -b .%{name}-makefile-ioctld-makedir
-%patch1 -p1
-
-rm -fr examples/CVS
+%setup -qn %{name}-%{version}%{prel}
+%patch0 -p1 -b .ioctld
 
 %build
 ./autogen.sh
@@ -53,13 +51,9 @@ rm -fr examples/CVS
 	--enable-shared \
 	--enable-ioctld \
 	--with-python \
-	--with-libgsm \
-	--without-libgadu
+	--with-libgsm
 
 %make
-pushd docs/api
-./make.pl
-popd
 
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -79,15 +73,14 @@ perl -pi -e 's/\015$//' %{buildroot}/%{_bindir}/ekl2.pl
 #Remove bad requires from libgadu.pc
 perl -pi -e 's/@[^@]*@//' %{buildroot}%{_libdir}/pkgconfig/libgadu.pc  
 
-
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 %files
 %defattr(644,root,root,755)
-%doc docs/{7thguard,dcc,files,gdb,python,sim,themes,ui-ncurses,vars,voip}.txt
+%doc docs/{dcc,files,gdb,python,sim,themes,ui-ncurses,vars,voip}.txt
 %doc ChangeLog docs/{FAQ,README,TODO,ULOTKA} docs/emoticons.{ansi,sample}
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}.conf
+%config(noreplace) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_bindir}/e*
 %attr(755,root,root) %{_bindir}/ioctld
 %{_datadir}/ekg
