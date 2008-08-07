@@ -3,7 +3,7 @@
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.8
-Release:	%mkrel -c rc1 1
+Release:	%mkrel -c rc2 1
 License:	GPLv2+
 Group:		Networking/Instant messaging
 Source0:	http://ekg.chmurka.net/%{name}-%{version}%{prel}.tar.bz2
