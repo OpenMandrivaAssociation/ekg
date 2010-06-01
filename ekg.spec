@@ -3,13 +3,14 @@
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.8
-Release:	%mkrel -c rc2 1
+Release:	%mkrel -c rc2 2
 License:	GPLv2+
 Group:		Networking/Instant messaging
 Source0:	http://ekg.chmurka.net/%{name}-%{version}%{prel}.tar.bz2
 Source1:	%{name}.conf
 URL:		http://ekg.chmurka.net/
 Patch0:		%{name}-makefile-ioctld-makedir.patch
+Patch1:		ekg-1.8_rc1-gtk.patch
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel
 BuildRequires:	libgsm-devel		>= 1.0.10
@@ -42,6 +43,7 @@ are in Polish (although the commands are in English).
 %prep
 %setup -qn %{name}-%{version}%{prel}
 %patch0 -p1 -b .ioctld
+%patch1 -p1 -b .gtk
 
 %build
 ./autogen.sh
