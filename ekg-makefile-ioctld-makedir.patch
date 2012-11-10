@@ -1,0 +1,13 @@
+--- ekg-1.7rc2/src/Makefile.in	2006-08-05 15:46:23.000000000 +0000
++++ ekg-1.7rc2/src/Makefile.in--	2006-10-20 03:54:57.000000000 +0000
+@@ -46,8 +46,8 @@
+ 	$(INSTALL) -m 755 ekg $(DESTDIR)$(bindir)
+ 
+ install-ioctld:	@strip_ioctld@
+-	$(INSTALL) -d $(DESTDIR)$(libexecdir)
+-	$(INSTALL) -m 755 ioctld $(DESTDIR)$(libexecdir)
++	$(INSTALL) -d $(DESTDIR)$(bindir)
++	$(INSTALL) -m 755 ioctld $(DESTDIR)$(bindir)
+ 
+ strip-ekg:
+ 	$(STRIP) ekg
