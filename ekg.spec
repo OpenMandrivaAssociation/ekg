@@ -3,22 +3,24 @@
 Summary:	A client compatible with Gadu-Gadu
 Name:		ekg
 Version:	1.8
-Release:	0.rc2.3
+Release:	0.rc2.4
 License:	GPLv2+
 Group:		Networking/Instant messaging
-URL:		http://ekg.chmurka.net/
+Url:		http://ekg.chmurka.net/
 Source0:	http://ekg.chmurka.net/%{name}-%{version}%{prel}.tar.bz2
 Source1:	%{name}.conf
 Patch0:		%{name}-makefile-ioctld-makedir.patch
 Patch1:		ekg-1.8_rc1-gtk.patch
-BuildRequires:	pkgconfig(python)
-BuildRequires:	libgsm-devel
+Patch2:		ekg-1.8rc1-linkage.patch
 BuildRequires:	aspell-devel
-BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	jpeg-devel
-BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(zlib)
+BuildRequires:	libgsm-devel
+BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libgadu)
+BuildRequires:	pkgconfig(ncurses)
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(zlib)
 
 %description
 EKG ("Eksperymentalny Klient Gadu-Gadu") is an open source gadu-gadu
@@ -36,15 +38,28 @@ EKG features include:
   - encryption support
 
 Please note that the program is not internationalized and all messages
-are in Polish (although the commands are in English). 
+are in Polish (although the commands are in English).
+
+%files
+%defattr(644,root,root,755)
+%doc docs/{dcc,files,gdb,python,sim,themes,ui-ncurses,vars,voip}.txt
+%doc ChangeLog docs/{FAQ,README,TODO,ULOTKA} docs/emoticons.{ansi,sample}
+%config(noreplace) %{_sysconfdir}/%{name}.conf
+%attr(755,root,root) %{_bindir}/e*
+%attr(755,root,root) %{_bindir}/ioctld
+%{_datadir}/ekg
+%{_mandir}/man1/*
+%{_mandir}/pl/man1/*
+
+#----------------------------------------------------------------------------
 
 %prep
 %setup -qn %{name}-%{version}%{prel}
 %patch0 -p1 -b .ioctld
 %patch1 -p1 -b .gtk
+%patch2 -p1 -b .linkage
 
 %build
-./autogen.sh
 %configure2_5x \
 	--enable-aspell \
 	--disable-static \
@@ -52,7 +67,6 @@ are in Polish (although the commands are in English).
 	--enable-ioctld \
 	--with-python \
 	--with-libgsm
-
 %make
 
 %install
@@ -70,15 +84,4 @@ perl -pi -e 's/\015$//' %{buildroot}/%{_bindir}/ekl2.pl
 
 #Remove bad requires from libgadu.pc
 perl -pi -e 's/@[^@]*@//' %{buildroot}%{_libdir}/pkgconfig/libgadu.pc
-
-%files
-%defattr(644,root,root,755)
-%doc docs/{dcc,files,gdb,python,sim,themes,ui-ncurses,vars,voip}.txt
-%doc ChangeLog docs/{FAQ,README,TODO,ULOTKA} docs/emoticons.{ansi,sample}
-%config(noreplace) %{_sysconfdir}/%{name}.conf
-%attr(755,root,root) %{_bindir}/e*
-%attr(755,root,root) %{_bindir}/ioctld
-%{_datadir}/ekg
-%{_mandir}/man1/*
-%{_mandir}/pl/man1/*
 

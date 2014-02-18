@@ -1,0 +1,12 @@
+diff -urN ekg-1.8rc1/src/Makefile.in ekg-1.8rc1-patched/src/Makefile.in
+--- ekg-1.8rc1/src/Makefile.in	2007-07-05 15:12:14.000000000 +1100
++++ ekg-1.8rc1-patched/src/Makefile.in	2014-02-19 01:22:12.667151986 +1100
+@@ -28,7 +28,7 @@
+ 
+ ekg:	$(OBJS) comptime.c
+ 	$(CC) $(CFLAGS) -c -o comptime.o comptime.c
+-	$(CC) $(CFLAGS) -o ekg $(OBJS) comptime.o $(LDFLAGS) $(LIBS)
++	$(CC) $(CFLAGS) -o ekg $(OBJS) comptime.o $(LDFLAGS) $(LIBS) -lX11
+ 
+ ioctld:	ioctld.c
+ 	$(CC) $(CFLAGS) ioctld.c -o ioctld $(LIBS) @IOCTLD_OBJS@
