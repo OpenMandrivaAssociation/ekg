@@ -6,7 +6,7 @@ Version:	1.8
 Release:	0.rc2.4
 License:	GPLv2+
 Group:		Networking/Instant messaging
-Url:		http://ekg.chmurka.net/
+Url:		https://ekg.chmurka.net/
 Source0:	http://ekg.chmurka.net/%{name}-%{version}%{prel}.tar.bz2
 Source1:	%{name}.conf
 Patch0:		%{name}-makefile-ioctld-makedir.patch
